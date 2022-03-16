@@ -4,11 +4,14 @@ import pandas as pd
 import seaborn as sn
 import matplotlib.pyplot as plt
 import joblib
+from PIL import Image
 
-
-st.title('ADULT CENSUS PREDICTION')
-st.write('There are a number of classifiers that can be used as to classify data on the basis of historic and already existing data. Here I tend to do a comparative study of different commonly used machine learning classifiers like Decision Tree,K-Nearest Neighbors, Random Forest, and Support Vector machine. The dataset chosen for this research is UCI Adult Dataset.')
-
+st.title('WELCOME')
+st.header('ADULT CENSUS INCOME PREDICTION')
+st.write('The main objective behind our project is to predict if a said person, given his attributes, earns more than $50k per annum or not.')
+image = Image.open('Adult_Census_img.png')
+st.image(image)
+st.write('NOTE: The users are requested to provide the Input to the form below and Click the Submit button to get the result')
 #Getting Inputs from Users
 with st.form(key = 'my_form'):
     #Age Input
@@ -16,7 +19,7 @@ with st.form(key = 'my_form'):
     final_age = (age - 38.581)/13.640
 
     #Workclass Input
-    workclass = st.selectbox('select the Workclass',(' State-gov',
+    workclass = st.selectbox('Select the Workclass',(' State-gov',
     ' Self-emp-not-inc',
     ' Private',
     ' Federal-gov',
@@ -76,13 +79,15 @@ with st.form(key = 'my_form'):
     d_country = {' United-States': 38, ' Cuba': 4, ' Jamaica': 22, ' India': 18, ' Mexico': 25, ' South': 34, ' Puerto-Rico': 32, ' Honduras': 15, ' England': 8, ' Canada': 1, ' Germany': 10, ' Iran': 19, ' Philippines': 29, ' Italy': 21, ' Poland': 30, ' Columbia': 3, ' Cambodia': 0, ' Thailand': 36, ' Ecuador': 6, ' Laos': 24, ' Taiwan': 35, ' Haiti': 13, ' Portugal': 31, ' Dominican-Republic': 5, ' El-Salvador': 7, ' France': 9, ' Guatemala': 12, ' China': 2, ' Japan': 23, ' Yugoslavia': 40, ' Peru': 28, ' Outlying-US(Guam-USVI-etc)': 27, ' Scotland': 33, ' Trinadad&Tobago': 37, ' Greece': 11, ' Nicaragua': 26, ' Vietnam': 39, ' Hong': 16, ' Ireland': 20, ' Hungary': 17, ' Holand-Netherlands': 14} 
     final_country = (d_country[country] - 36.41715549276742)/6.056046527027436
 
+        
+    #USING SUBMIT BUTTON FOR FORM and Displaying output
     submit_button = st.form_submit_button(label = 'Submit')
     if submit_button:
         final_list = [final_age,final_workclass,final_education,final_marital,final_occupation,final_relation,final_sex,final_hrs,final_country]
         load_rfc = joblib.load('Adult_census_prediction.sav')
         ans = load_rfc.predict([final_list])
         if(ans[0] == 0):
-            st.write('OUTPUT: <=50K')
+            st.write('This Person Earns less than 50K Dollars Per year')
         else:
-            st.write('OUTPUT:>50k')
+            st.write('This Person Earns more than 50k Dollars per year')
 
